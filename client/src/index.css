@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #FAF9F6;
+  color: #1F2937;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom transitions and scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(30, 30, 28, 0.15);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(30, 30, 28, 0.3);
+}
+
+/* Custom keyframes for premium fade and scale effects */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulseBorder {
+  0%, 100% { border-color: rgba(197, 155, 39, 0.2); }
+  50% { border-color: rgba(197, 155, 39, 0.6); }
+}
+
+.border-pulse {
+  animation: pulseBorder 2s infinite ease-in-out;
+}
+
+/* Premium Intro Animation Keyframes */
+@keyframes metallicSweep {
+  0% { transform: translateX(-150%) rotate(25deg); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translateX(250%) rotate(25deg); opacity: 0; }
+}
+
+.animate-metallic-sweep {
+  animation: metallicSweep 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes routeLineDash {
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-route-line {
+  stroke-dasharray: 20 10;
+  animation: routeLineDash 20s linear infinite;
+}
+
+@keyframes floatParticle {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(-120px) scale(1.2); opacity: 0; }
+}
+
+.animate-float-particle {
+  animation: floatParticle 6s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.text-gold-shimmer {
+  background: linear-gradient(90deg, #D4AF37 0%, #FFF8DC 25%, #FFD700 50%, #FFF8DC 75%, #D4AF37 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: goldShimmer 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-metallic-sweep,
+  .animate-route-line,
+  .animate-float-particle,
+  .text-gold-shimmer {
+    animation: none !important;
+  }
+}
