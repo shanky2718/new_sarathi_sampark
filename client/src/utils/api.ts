@@ -380,6 +380,27 @@ export const api = {
       if (!res.ok) throw new Error('Failed to fetch analytics from MySQL');
       return await res.json();
     }
+  },
+
+  // Contact API
+  contact: {
+    submit: async (data: any) => {
+      const res = await fetch(`${BASE_URL}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Failed to submit contact message' }));
+        throw new Error(err.error || 'Failed to submit contact message');
+      }
+      return await res.json();
+    },
+    getAll: async () => {
+      const res = await fetch(`${BASE_URL}/contact`, { headers: getHeaders() });
+      if (!res.ok) throw new Error('Failed to fetch contact inquiries from MySQL');
+      return await res.json();
+    }
   }
 };
 

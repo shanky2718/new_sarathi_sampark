@@ -19,8 +19,17 @@ import {
   Building2,
   Send,
   PhoneCall,
-  Mail
+  Mail,
+  X,
+  LogIn,
+  UserPlus,
+  Sparkles,
+  Leaf,
+  CheckCircle2,
+  Layers,
+  Wrench
 } from 'lucide-react';
+import api from '../utils/api';
 
 interface LandingPageProps {
   onNavigate: (page: string) => void;
@@ -28,16 +37,52 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const [activeSection, setActiveSection] = useState<'home' | 'about' | 'solutions' | 'how-it-works' | 'services' | 'impact' | 'contact'>('home');
+  const [showAuthModal, setShowAuthModal] = useState(true);
 
-  // Animated truck route progress
-  const [routeProgress, setRouteProgress] = useState(0);
+  // Contact Form State
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    mobile: '',
+    company: '',
+    subject: 'Platform Inquiry',
+    message: ''
+  });
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState<string | null>(null);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRouteProgress(prev => (prev >= 100 ? 0 : prev + 1));
-    }, 80);
-    return () => clearInterval(interval);
-  }, []);
+  // Smooth scroll handler to sections
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId as any);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contactForm.name || !contactForm.email || !contactForm.message) {
+      alert('Please fill out Name, Email, and Message.');
+      return;
+    }
+    setContactSubmitting(true);
+    try {
+      const response = await api.contact.submit(contactForm);
+      setContactSuccess(response.message || 'Inquiry submitted successfully!');
+      setContactForm({ name: '', email: '', mobile: '', company: '', subject: 'Platform Inquiry', message: '' });
+    } catch (err: any) {
+      alert(err.message || 'Failed to send inquiry.');
+    } finally {
+      setContactSubmitting(false);
+    }
+  };
 
   const solutionsList = [
     { title: "Smart Return Load Allocation", desc: "Automated AI matching of unutilized return truck capacities with verified shippers.", icon: Package, badge: "Core AI Engine" },
@@ -49,6 +94,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     { title: "Fleet Management", desc: "Complete vehicle registry, service reminders, and preventive workshop logs.", icon: Truck, badge: "Fleet Control" },
     { title: "Driver Management", desc: "Driver roster, commercial license verification, and safety performance scores.", icon: UserCheck, badge: "Safety Index" },
     { title: "Analytics & P&L Ledger", desc: "Deep financial insights into net profit margin per KM and backhaul earnings.", icon: TrendingUp, badge: "Financials" }
+  ];
+
+  const servicesList = [
+    { title: "Return Freight Matching", desc: "Connect empty return trucks with verified shippers within 50 KM radius.", icon: Layers },
+    { title: "Fleet Telemetry & GPS", desc: "Real-time satellite GPS tracking with speed alerts and geofencing.", icon: Zap },
+    { title: "Fuel Anomaly Safeguards", desc: "Detect fuel siphoning and engine idling spikes with automated alerts.", icon: Fuel },
+    { title: "Digital RTO Documents", desc: "Cloud vault for RC, PUC, Commercial Insurance, and GST certificates.", icon: FileText },
+    { title: "Workshop Maintenance Logs", desc: "Preventive maintenance scheduling and garage expenditure records.", icon: Wrench },
+    { title: "Freight Analytics Ledger", desc: "Full financial transparency with cost-per-KM & return load net profits.", icon: BarChart }
   ];
 
   const howItWorksSteps = [
@@ -63,11 +117,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-[#FAF9F6] text-charcoal font-sans selection:bg-amber-400 selection:text-[#0B1320]">
       
       {/* 1. PUBLIC NAVIGATION HEADER */}
-      <header className="sticky top-0 z-50 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-stone-200">
+      <header className="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-stone-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex h-20 items-center justify-between">
           
           {/* Logo */}
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveSection('home')}>
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => scrollToSection('home')}>
             <img 
               src="/logo.png" 
               alt="Sarathi Samparka Logo" 
@@ -84,44 +138,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 text-xs font-bold text-charcoal/80">
             <button 
-              onClick={() => setActiveSection('home')} 
-              className={`hover:text-amber-600 transition ${activeSection === 'home' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
+              onClick={() => scrollToSection('home')} 
+              className={`hover:text-amber-600 transition cursor-pointer ${activeSection === 'home' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
             >
               Home
             </button>
             <button 
-              onClick={() => setActiveSection('about')} 
-              className={`hover:text-amber-600 transition ${activeSection === 'about' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
+              onClick={() => scrollToSection('about')} 
+              className={`hover:text-amber-600 transition cursor-pointer ${activeSection === 'about' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
             >
               About
             </button>
             <button 
-              onClick={() => setActiveSection('solutions')} 
-              className={`hover:text-amber-600 transition ${activeSection === 'solutions' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
+              onClick={() => scrollToSection('solutions')} 
+              className={`hover:text-amber-600 transition cursor-pointer ${activeSection === 'solutions' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
             >
               Solutions
             </button>
             <button 
-              onClick={() => setActiveSection('how-it-works')} 
-              className={`hover:text-amber-600 transition ${activeSection === 'how-it-works' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
+              onClick={() => scrollToSection('how-it-works')} 
+              className={`hover:text-amber-600 transition cursor-pointer ${activeSection === 'how-it-works' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
             >
               How It Works
             </button>
             <button 
-              onClick={() => setActiveSection('services')} 
-              className={`hover:text-amber-600 transition ${activeSection === 'services' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
+              onClick={() => scrollToSection('services')} 
+              className={`hover:text-amber-600 transition cursor-pointer ${activeSection === 'services' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
             >
               Services
             </button>
             <button 
-              onClick={() => setActiveSection('impact')} 
-              className={`hover:text-amber-600 transition ${activeSection === 'impact' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
+              onClick={() => scrollToSection('impact')} 
+              className={`hover:text-amber-600 transition cursor-pointer ${activeSection === 'impact' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
             >
               Impact
             </button>
             <button 
-              onClick={() => setActiveSection('contact')} 
-              className={`hover:text-amber-600 transition ${activeSection === 'contact' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
+              onClick={() => scrollToSection('contact')} 
+              className={`hover:text-amber-600 transition cursor-pointer ${activeSection === 'contact' ? 'text-amber-600 border-b-2 border-amber-600 pb-1' : ''}`}
             >
               Contact
             </button>
@@ -131,13 +185,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           <div className="flex items-center space-x-3">
             <button 
               onClick={() => onNavigate('login')}
-              className="px-4 py-2 text-xs font-bold text-[#0B1320] border border-stone-300 rounded-xl hover:bg-stone-100 transition"
+              className="px-4 py-2 text-xs font-bold text-[#0B1320] border border-stone-300 rounded-xl hover:bg-stone-100 transition cursor-pointer"
             >
               Log In
             </button>
             <button 
               onClick={() => onNavigate('register')}
-              className="px-4 py-2 bg-[#0B1320] text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition shadow-md flex items-center gap-1.5"
+              className="px-4 py-2 bg-[#0B1320] text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition shadow-md flex items-center gap-1.5 cursor-pointer"
             >
               <span>Register Truck</span>
               <ArrowRight className="h-3.5 w-3.5 text-amber-400" />
@@ -147,7 +201,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       </header>
 
       {/* 2. HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-[#FAF9F6] to-stone-100">
+      <section id="home" className="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-[#FAF9F6] to-stone-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
           
           <div className="space-y-6">
@@ -167,14 +221,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <button 
                 onClick={() => onNavigate('register')}
-                className="px-6 py-3.5 bg-[#0B1320] text-white font-bold text-sm rounded-xl hover:bg-slate-800 transition flex items-center gap-2 shadow-lg"
+                className="px-6 py-3.5 bg-[#0B1320] text-white font-bold text-sm rounded-xl hover:bg-slate-800 transition flex items-center gap-2 shadow-lg cursor-pointer"
               >
                 <span>Find a Return Load</span>
                 <ArrowRight className="h-4 w-4 text-amber-400" />
               </button>
               <button 
                 onClick={() => onNavigate('register')}
-                className="px-6 py-3.5 bg-white text-[#0B1320] border border-stone-300 font-bold text-sm rounded-xl hover:bg-stone-50 transition shadow-sm"
+                className="px-6 py-3.5 bg-white text-[#0B1320] border border-stone-300 font-bold text-sm rounded-xl hover:bg-stone-50 transition shadow-sm cursor-pointer"
               >
                 Register Your Truck
               </button>
@@ -197,13 +251,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Hero Visual: Premium Freight Optimisation Showcase */}
+          {/* Hero Visual */}
           <div className="relative bg-[#0B1320] p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-2xl overflow-hidden text-white min-h-[420px] flex flex-col justify-between group hover:border-amber-500/40 transition-all duration-500">
-            {/* Ambient Lighting Backdrop */}
             <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
             <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-amber-600/10 blur-3xl pointer-events-none" />
 
-            {/* Header Title Bar */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-4 relative z-10">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -212,7 +264,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               <span className="text-[11px] text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full font-semibold">Real-Time Optimisation</span>
             </div>
 
-            {/* Center Main Logo Showcase */}
             <div className="my-6 relative z-10 bg-slate-950/80 border border-amber-500/20 rounded-2xl p-4 shadow-xl flex flex-col items-center justify-center text-center backdrop-blur-md">
               <img 
                 src="/logo.png" 
@@ -226,7 +277,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            {/* Live Matched Freight Metrics Cards */}
             <div className="grid grid-cols-2 gap-3 relative z-10">
               <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-amber-500/30 transition-colors">
                 <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
@@ -253,7 +303,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* 3. PROBLEM SECTION */}
-      <section className="py-20 bg-[#0B1320] text-white">
+      <section id="problem" className="py-20 bg-[#0B1320] text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
           
           <div className="text-center max-w-3xl mx-auto space-y-3">
@@ -303,33 +353,49 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 4. VISION & MISSION */}
-      <section className="py-16 bg-white border-y border-stone-200">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8">
-          <div className="p-8 bg-amber-50/60 rounded-3xl border border-amber-200/80 space-y-3">
-            <span className="text-xs font-extrabold text-amber-900 uppercase tracking-wider">Platform Vision</span>
-            <h3 className="text-xl font-extrabold text-[#0B1320]">
-              Building Bharat's paperless logistics network with zero unnecessary empty returns.
-            </h3>
-            <p className="text-xs text-charcoal/70 leading-relaxed">
-              Empowering every Indian truck owner with real-time digital demand discovery, automated escrow payments, and IoT telemetry.
+      {/* 4. ABOUT / VISION & MISSION SECTION */}
+      <section id="about" className="py-20 bg-white border-y border-stone-200">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-3xl mx-auto space-y-2">
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
+              About Sarathi Sampark
+            </span>
+            <h2 className="text-3xl font-extrabold text-[#0B1320]">
+              Pioneering Zero-Empty-Return Freight Infrastructure
+            </h2>
+            <p className="text-xs text-charcoal/70">
+              Transforming Indian road transport with paperless workflows and AI-driven backhaul load matching.
             </p>
           </div>
 
-          <div className="p-8 bg-emerald-50/60 rounded-3xl border border-emerald-200/80 space-y-3">
-            <span className="text-xs font-extrabold text-emerald-900 uppercase tracking-wider">Platform Mission</span>
-            <h3 className="text-xl font-extrabold text-[#0B1320]">
-              Maximizing profits, optimizing asset utilization and reducing freight emissions.
-            </h3>
-            <p className="text-xs text-charcoal/70 leading-relaxed">
-              Cutting empty return trips from 34% down to 12%, saving millions of liters of diesel and tons of CO₂ emissions annually.
-            </p>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="p-8 bg-amber-50/60 rounded-3xl border border-amber-200/80 space-y-3">
+              <span className="text-xs font-extrabold text-amber-900 uppercase tracking-wider">Platform Vision</span>
+              <h3 className="text-xl font-extrabold text-[#0B1320]">
+                Building Bharat's paperless logistics network with zero unnecessary empty returns.
+              </h3>
+              <p className="text-xs text-charcoal/70 leading-relaxed">
+                Empowering every Indian truck owner with real-time digital demand discovery, automated escrow payments, and IoT telemetry.
+              </p>
+            </div>
+
+            <div className="p-8 bg-emerald-50/60 rounded-3xl border border-emerald-200/80 space-y-3">
+              <span className="text-xs font-extrabold text-emerald-900 uppercase tracking-wider">Platform Mission</span>
+              <h3 className="text-xl font-extrabold text-[#0B1320]">
+                Maximizing profits, optimizing asset utilization and reducing freight emissions.
+              </h3>
+              <p className="text-xs text-charcoal/70 leading-relaxed">
+                Cutting empty return trips from 34% down to 12%, saving millions of liters of diesel and tons of CO₂ emissions annually.
+              </p>
+            </div>
           </div>
+
         </div>
       </section>
 
       {/* 5. SOLUTIONS SECTION */}
-      <section className="py-20 bg-[#FAF9F6]">
+      <section id="solutions" className="py-20 bg-[#FAF9F6]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
           
           <div className="text-center max-w-3xl mx-auto space-y-2">
@@ -367,8 +433,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 6. HOW IT WORKS (ANIMATED 5-STEP PROCESS) */}
-      <section className="py-20 bg-white border-t border-stone-200">
+      {/* 6. HOW IT WORKS */}
+      <section id="how-it-works" className="py-20 bg-white border-t border-stone-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
           
           <div className="text-center max-w-2xl mx-auto space-y-2">
@@ -395,7 +461,240 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 7. CONTACT & FOOTER */}
+      {/* 7. SERVICES SECTION */}
+      <section id="services" className="py-20 bg-[#FAF9F6] border-t border-stone-200">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-3xl mx-auto space-y-2">
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
+              Core Platform Services
+            </span>
+            <h2 className="text-3xl font-extrabold text-[#0B1320]">
+              Integrated Logistics Tech Solutions
+            </h2>
+            <p className="text-xs text-charcoal/70">
+              Tailored services for Indian transporters, fleet operators, and enterprise shippers.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {servicesList.map((srv, idx) => {
+              const Icon = srv.icon;
+              return (
+                <div key={idx} className="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:shadow-md transition space-y-3">
+                  <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-800 w-fit">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-base font-bold text-[#0B1320]">{srv.title}</h3>
+                  <p className="text-xs text-charcoal/70 leading-relaxed">{srv.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 8. IMPACT & SUSTAINABILITY SECTION */}
+      <section id="impact" className="py-20 bg-[#0B1320] text-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5 w-fit mx-auto">
+              <Leaf className="h-3.5 w-3.5 text-emerald-400" />
+              <span>Sustainability & Economic Impact</span>
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
+              Measurable Savings For Bharat's Logistics Corridor
+            </h2>
+            <p className="text-xs text-slate-300">
+              Transforming unutilized truck returns into net-positive economic and environmental outcomes.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+              <p className="text-3xl font-black text-amber-400">31%</p>
+              <p className="text-xs font-bold text-slate-200">Empty Return Trips Reduced</p>
+              <p className="text-[11px] text-slate-400 leading-relaxed">Cut down from 34% national baseline to 12% among active transporters.</p>
+            </div>
+
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+              <p className="text-3xl font-black text-emerald-400">148,500 L</p>
+              <p className="text-xs font-bold text-slate-200">Diesel Fuel Saved</p>
+              <p className="text-[11px] text-slate-400 leading-relaxed">Conserved through optimized backhaul route matching and lower idle times.</p>
+            </div>
+
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+              <p className="text-3xl font-black text-blue-400">395 Tons</p>
+              <p className="text-xs font-bold text-slate-200">CO₂ Emissions Avoided</p>
+              <p className="text-[11px] text-slate-400 leading-relaxed">Direct reduction in highway carbon footprint and particulate pollution.</p>
+            </div>
+
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 text-center space-y-2">
+              <p className="text-3xl font-black text-purple-400">+28%</p>
+              <p className="text-xs font-bold text-slate-200">Truck Utilization Increase</p>
+              <p className="text-[11px] text-slate-400 leading-relaxed">Enhanced net monthly revenue and faster asset payback cycles for owners.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 9. CONTACT SECTION */}
+      <section id="contact" className="py-20 bg-white border-t border-stone-200">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="text-center max-w-3xl mx-auto space-y-2">
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
+              Get In Touch
+            </span>
+            <h2 className="text-3xl font-extrabold text-[#0B1320]">
+              Contact Sarathi Sampark Logistics Team
+            </h2>
+            <p className="text-xs text-charcoal/70">
+              Have questions about onboard fleet registration or shipper integration? Our technical specialists are here to help.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            
+            {/* Contact Info Card */}
+            <div className="bg-[#0B1320] text-white p-8 rounded-3xl space-y-6 shadow-xl border border-slate-800">
+              <div className="space-y-2">
+                <h3 className="text-xl font-extrabold text-amber-400">Sarathi Sampark Technical Support</h3>
+                <p className="text-xs text-slate-300">Bharat Logistics Technology Private Limited</p>
+              </div>
+
+              <div className="space-y-4 text-xs text-slate-300 pt-2 border-t border-slate-800">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-slate-900 rounded-xl text-amber-400 border border-slate-800">
+                    <PhoneCall className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-white">Toll-Free Support Helpline</p>
+                    <p className="text-slate-400">1800-419-7700 (24/7 Transporter Desk)</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-slate-900 rounded-xl text-amber-400 border border-slate-800">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-white">Official Email</p>
+                    <p className="text-slate-400">support@sarathisampark.in</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-slate-900 rounded-xl text-amber-400 border border-slate-800">
+                    <Building2 className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-white">Headquarters Office</p>
+                    <p className="text-slate-400">142, 4th Block, Industrial Layout, Koramangala, Bengaluru, KA - 560034</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                <p className="font-bold text-amber-400">Transporter Assistance Hours</p>
+                <p className="text-[11px]">Monday – Saturday: 08:00 AM to 10:00 PM IST</p>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="bg-[#FAF9F6] p-8 rounded-3xl border border-stone-300 shadow-sm space-y-4">
+              <h3 className="text-lg font-extrabold text-[#0B1320]">Send Us a Message</h3>
+
+              {contactSuccess && (
+                <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-semibold flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <span>{contactSuccess}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-charcoal/80 mb-1">Your Name *</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="e.g. Ramesh Patel"
+                      value={contactForm.name}
+                      onChange={e => setContactForm({ ...contactForm, name: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-charcoal/80 mb-1">Email Address *</label>
+                    <input 
+                      type="email" 
+                      required
+                      placeholder="ramesh@transports.in"
+                      value={contactForm.email}
+                      onChange={e => setContactForm({ ...contactForm, email: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-bold text-charcoal/80 mb-1">Mobile Number</label>
+                    <input 
+                      type="text" 
+                      placeholder="+91 98765 43210"
+                      value={contactForm.mobile}
+                      onChange={e => setContactForm({ ...contactForm, mobile: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-charcoal/80 mb-1">Company / Fleet Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Patel Logistics"
+                      value={contactForm.company}
+                      onChange={e => setContactForm({ ...contactForm, company: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-bold text-charcoal/80 mb-1">Message *</label>
+                  <textarea 
+                    rows={4}
+                    required
+                    placeholder="Describe your inquiry or fleet details..."
+                    value={contactForm.message}
+                    onChange={e => setContactForm({ ...contactForm, message: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 outline-none resize-none"
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  disabled={contactSubmitting}
+                  className="w-full py-3 bg-[#0B1320] text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition flex items-center justify-center gap-2 shadow-md cursor-pointer disabled:opacity-50"
+                >
+                  <Send className="h-3.5 w-3.5 text-amber-400" />
+                  <span>{contactSubmitting ? 'Submitting Message...' : 'Submit Message'}</span>
+                </button>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 10. FOOTER */}
       <footer className="bg-[#0B1320] text-white pt-16 pb-12 border-t border-slate-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8 mb-12">
           
@@ -415,11 +714,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-2 text-xs text-slate-300">
-            <p className="font-bold text-white uppercase tracking-wider mb-2">Platform Modules</p>
-            <p className="hover:text-amber-400 cursor-pointer" onClick={() => onNavigate('login')}>Return Load Marketplace</p>
-            <p className="hover:text-amber-400 cursor-pointer" onClick={() => onNavigate('login')}>Live GPS Telemetry</p>
-            <p className="hover:text-amber-400 cursor-pointer" onClick={() => onNavigate('login')}>Digital Documents Compliance</p>
-            <p className="hover:text-amber-400 cursor-pointer" onClick={() => onNavigate('login')}>Fuel Anomaly Detection</p>
+            <p className="font-bold text-white uppercase tracking-wider mb-2">Platform Navigation</p>
+            <p className="hover:text-amber-400 cursor-pointer" onClick={() => scrollToSection('about')}>About Platform</p>
+            <p className="hover:text-amber-400 cursor-pointer" onClick={() => scrollToSection('solutions')}>Solutions Suite</p>
+            <p className="hover:text-amber-400 cursor-pointer" onClick={() => scrollToSection('how-it-works')}>How It Works</p>
+            <p className="hover:text-amber-400 cursor-pointer" onClick={() => scrollToSection('services')}>Services</p>
+            <p className="hover:text-amber-400 cursor-pointer" onClick={() => scrollToSection('impact')}>Sustainability Impact</p>
           </div>
 
           <div className="space-y-2 text-xs text-slate-300">
@@ -439,7 +739,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               />
               <button 
                 onClick={() => alert("Demo request received! Our logistics technical specialist will call you shortly.")}
-                className="px-3 py-2 bg-amber-500 text-[#0B1320] font-bold rounded-xl text-xs hover:bg-amber-400"
+                className="px-3 py-2 bg-amber-500 text-[#0B1320] font-bold rounded-xl text-xs hover:bg-amber-400 cursor-pointer"
               >
                 Send
               </button>
@@ -452,6 +752,100 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           © 2026 Sarathi Sampark Logistics Platform. All Rights Reserved. Built for Bharat Freight.
         </div>
       </footer>
+
+      {/* 11. AUTOMATIC ENTRY AUTHENTICATION POPUP MODAL */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1320]/80 backdrop-blur-md p-4 animate-in fade-in duration-300">
+          <div className="relative w-full max-w-lg bg-white rounded-3xl border border-amber-500/30 shadow-2xl overflow-hidden p-6 sm:p-8 space-y-6">
+            
+            {/* Close Modal Button */}
+            <button 
+              onClick={() => setShowAuthModal(false)}
+              className="absolute top-4 right-4 p-2 text-stone-400 hover:text-[#0B1320] hover:bg-stone-100 rounded-full transition cursor-pointer"
+              title="Close & Explore Homepage"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Modal Header */}
+            <div className="text-center space-y-3 pt-2">
+              <div className="flex justify-center">
+                <img 
+                  src="/logo.png" 
+                  alt="Sarathi Samparka Logo" 
+                  className="h-16 w-auto object-contain rounded-2xl shadow-lg border border-amber-200"
+                />
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-900 border border-amber-300">
+                <Sparkles className="h-3.5 w-3.5 text-amber-700" />
+                <span>BHARAT LOGISTICS TECHNOLOGY PLATFORM</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#0B1320] tracking-tight">
+                Welcome to Sarathi Sampark
+              </h2>
+              <p className="text-xs text-charcoal/80 max-w-sm mx-auto leading-relaxed">
+                Connecting Every Journey. Empowering Every Sarathi. Please log in or create an account to access the Return Load Marketplace.
+              </p>
+            </div>
+
+            {/* Main Action Buttons */}
+            <div className="space-y-3 pt-2">
+              <button 
+                onClick={() => onNavigate('register')}
+                className="w-full py-3.5 bg-[#0B1320] text-white font-extrabold text-sm rounded-2xl hover:bg-slate-800 transition flex items-center justify-center gap-2 shadow-lg group cursor-pointer"
+              >
+                <UserPlus className="h-4 w-4 text-amber-400" />
+                <span>Create New Account / Register Truck</span>
+                <ArrowRight className="h-4 w-4 text-amber-400 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <button 
+                onClick={() => onNavigate('login')}
+                className="w-full py-3.5 bg-stone-100 text-[#0B1320] font-extrabold text-sm rounded-2xl border border-stone-300 hover:bg-stone-200 transition flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              >
+                <LogIn className="h-4 w-4 text-amber-700" />
+                <span>Log In to Existing Account</span>
+              </button>
+            </div>
+
+            {/* Quick Demo Access Bar */}
+            <div className="border-t border-stone-200 pt-4 text-center space-y-2">
+              <p className="text-[11px] text-charcoal/60 font-semibold uppercase tracking-wider">Quick Demo Credentials Access</p>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <button 
+                  onClick={() => onNavigate('login')}
+                  className="px-3 py-1.5 bg-amber-50 text-amber-900 border border-amber-200 rounded-xl text-xs font-bold hover:bg-amber-100 transition cursor-pointer"
+                >
+                  Transporter Demo
+                </button>
+                <button 
+                  onClick={() => onNavigate('login')}
+                  className="px-3 py-1.5 bg-stone-100 text-stone-900 border border-stone-300 rounded-xl text-xs font-bold hover:bg-stone-200 transition cursor-pointer"
+                >
+                  Shipper Demo
+                </button>
+                <button 
+                  onClick={() => onNavigate('login')}
+                  className="px-3 py-1.5 bg-slate-900 text-amber-400 rounded-xl text-xs font-bold hover:bg-slate-800 transition cursor-pointer"
+                >
+                  Admin Control
+                </button>
+              </div>
+            </div>
+
+            {/* Dismiss option */}
+            <div className="text-center pt-1">
+              <button 
+                onClick={() => setShowAuthModal(false)}
+                className="text-xs font-semibold text-charcoal/60 hover:text-amber-700 underline underline-offset-4 cursor-pointer"
+              >
+                Skip & Explore Homepage First →
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );

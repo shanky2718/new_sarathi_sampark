@@ -6,7 +6,6 @@
 CREATE DATABASE IF NOT EXISTS sarathi_sampark_db;
 USE sarathi_sampark_db;
 
--- Disable foreign key checks for clean structure re-creation if needed
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. USERS TABLE

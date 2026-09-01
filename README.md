@@ -1,167 +1,157 @@
-# SARATHI SAMPARK (सारथी संपर्क)
-
-> **Tagline:** *"Connecting Every Journey. Empowering Every Sarathi."*
-
-Sarathi Sampark is an Indian digital logistics management SaaS platform designed to eliminate empty truck return trips across Bharat. It provides end-to-end fleet monitoring, a return load marketplace, live GPS telemetry, digital compliance document management, diesel anomaly detection, financial P&L ledgers, and platform administration.
+# 🚚 SARATHI SAMPARK (सारथी संपर्क)
+### "Connecting Every Journey. Empowering Every Sarathi."
+**Turn Empty Returns Into Profitable Journeys.**
 
 ---
 
-## 🏗️ Architecture & Technology Stack
+## 📌 Executive Summary
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    React Frontend                       │
-│           (TypeScript, Vite, Tailwind CSS v4)           │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                      HTTP REST APIs
-                             │
-┌────────────────────────────▼────────────────────────────┐
-│                  Express.js Backend API                 │
-│         (Node.js, TypeScript, JWT, bcryptjs)            │
-└────────────────────────────┬────────────────────────────┘
-                             │
-                     mysql2 Connection
-                             │
-┌────────────────────────────▼────────────────────────────┐
-│                    MySQL Database                       │
-│      (Normalized Relational DB: sarathi_sampark_db)     │
-└─────────────────────────────────────────────────────────┘
+**SARATHI SAMPARK** is a production-style, Indian digital logistics technology SaaS platform designed to eliminate unutilized return freight trips. By directly matching transporters returning from primary load drop-offs with verified shippers requiring backhaul freight capacity, Sarathi Sampark maximizes truck utilization, increases driver revenue, eliminates diesel waste, and cuts carbon emissions across Indian national highway freight corridors.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+React Frontend (Vite + TS + Tailwind)
+                │
+          REST APIs (Axios)
+                │
+  Express Backend (Node.js + TS)
+                │
+  JWT Authentication & Middleware
+                │
+   Prisma ORM & MySQL Connector
+                │
+  MySQL Database & Workbench 8.0
 ```
 
-- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS v4, Lucide React, Recharts.
-- **Backend API:** Node.js, Express.js, TypeScript, JWT Authentication (`jsonwebtoken`), Password Hashing (`bcryptjs`).
-- **Database:** MySQL 8.0+ (Relational Database with Foreign Key constraints, Indexes, and Parameterized Queries).
+---
+
+## 🚀 Key Platform Features
+
+1. **Return Load Marketplace**: Central core engine connecting transporters with nearby verified return loads based on distance, cargo type, net profit, and truck capacity. Features instant multi-step database transactions for load acceptance.
+2. **Real Multi-Tenant Authentication & Authorization**: JWT token auth, bcrypt password hashing, session persistence, and role-based views (`Admin`, `Transporter`, `Truck Owner`, `Driver`, `Fleet Manager`, `Shipper`).
+3. **Fleet & Driver Management**: Real-time tracking of truck statuses (`Available`, `Active`, `Delayed`, `Maintenance`), driver Rosters, commercial driver license expirations, and safety indexes.
+4. **Live Telemetry & GPS Tracking**: Interactive route visualization with pulsing truck markers, ETA predictions, speed readings, and remaining fuel monitoring.
+5. **Trips & Delivery Management**: Complete lifecycle status updates (`Order Confirmed` ➔ `Picked Up` ➔ `In Transit` ➔ `Near Destination` ➔ `Delivered`).
+6. **Digital Document Management**: Paperless RTO compliance for RC, Commercial Insurance, PUC, Driving Licenses, and E-Way Bills with automated expiration indicators.
+7. **Fuel & Maintenance Management**: Fuel consumption anomaly detection (detecting excessive idling/theft) and scheduled workshop preventive maintenance logs.
+8. **Financial Ledger & Analytics**: Net profit per KM calculations, expense tracking, return load backhaul revenue stats, and Recharts visual analytics.
+9. **Impact & Sustainability Hub**: Real-time metrics showing empty return trip reduction (34% down to 12%), liters of diesel saved, and CO₂ emissions avoided.
+10. **Admin Command Center**: User management, transporter/shipper GST verification, document approvals, platform complaints resolution, and system audit logs.
 
 ---
 
-## 🗄️ Database Table Overview (13 MySQL Tables)
+## 🛠️ Technology Stack
 
-The database schema (`database/schema.sql`) contains 13 normalized tables:
-
-1. **`users`**: User registration, login, roles (`Transporter`, `Truck Owner`, `Driver`, `Fleet Manager`, `Shipper / Business`, `Admin`), GST credentials, and password hashes.
-2. **`trucks`**: Fleet registry (`truck_id`, `plate_number`, `model`, `type`, `capacity`, `driver`, `status`, `location`, `fuel`, `mileage`, service/insurance expiries).
-3. **`drivers`**: Commercial driver roster (`name`, `phone`, `photo`, `assigned_truck`, `trips_completed`, `rating`, `safety_score`, `license_number`, `status`).
-4. **`return_loads`**: Return Load Marketplace listings (`load_id`, `pickup`, `destination`, `distance`, `cargo`, `weight`, `offered_price`, `estimated_fuel_cost`, `estimated_profit`, `verified_shipper`, `shipper_name`, `status`, `accepted_by_truck`).
-5. **`trips`**: Active dispatch and trip progress (`trip_id`, `truck`, `driver`, `origin`, `destination`, `distance`, `start_time`, `eta`, `status`, `progress`, `current_lat`, `current_lng`).
-6. **`deliveries`**: Order deliveries (`delivery_id`, `customer`, `pickup`, `destination`, `truck`, `driver`, `expected_delivery`, `status`).
-7. **`digital_documents`**: RTO & compliance vault (`doc_id`, `title`, `category`, `entity`, `upload_date`, `expiry_date`, `status`, `file_size`, `document_number`).
-8. **`fuel_metrics`**: Fuel telemetry & refill logs (`metric_id`, `truck_id`, `plate_number`, `driver`, `fuel_consumed_liters`, `fuel_cost`, `avg_km_l`, `baseline_km_l`, `anomaly_percentage`, `has_anomaly`, `anomaly_reason`).
-9. **`maintenance_records`**: Servicing logs (`record_id`, `truck_id`, `plate_number`, `service_type`, `scheduled_date`, `completed_date`, `cost`, `status`, `mechanic_center`, `notes`).
-10. **`expenses`**: Operating financial expenses (`expense_id`, `category`, `amount`, `date`, `truck`, `description`).
-11. **`notifications`**: Platform alerts & marketplace notifications (`notif_id`, `type`, `message`, `time_ago`, `is_read`).
-12. **`transporter_verifications`**: Admin KYC queue for Transporters (`verification_id`, `company_name`, `owner_name`, `gst_number`, `truck_count`, `mobile`, `city`, `status`).
-13. **`shipper_verifications`**: Admin approval queue for Freight Shippers (`verification_id`, `company_name`, `contact_person`, `gst_number`, `loads_posted`, `mobile`, `city`, `status`).
+* **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React, Recharts.
+* **Backend**: Node.js, Express.js, TypeScript, JWT (`jsonwebtoken`), `bcryptjs`, CORS, `dotenv`.
+* **Database & ORM**: MySQL 8.0+, Prisma ORM (`@prisma/client`), MySQL2 (`mysql2/promise`).
+* **Database Tools**: MySQL Workbench compatible SQL schema and seeds.
 
 ---
 
-## ⚙️ Environment Variables Configuration
+## 🔐 Demo Accounts Credentials
 
-Create a `.env` file inside the `server/` directory:
+| Role | Email | Password | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Transporter** | `transporter@sarathi.in` | `password123` | Transporter Fleet Operations Dashboard |
+| **Admin** | `admin@sarathi.in` | `admin123` | Platform Administrative Control & Verification |
+| **Truck Owner** | `truckowner@sarathi.in` | `password123` | Individual Fleet Management |
+| **Shipper** | `shipper@sarathi.in` | `password123` | Return Load Freight Posting |
+
+---
+
+## 💻 Environment Variables Configuration
+
+Create a `.env` file in the `server` directory (or use `.env.example`):
 
 ```env
 PORT=5000
-NODE_ENV=development
-
-# MySQL Database Connection Settings
-DB_HOST=localhost
+FRONTEND_URL=http://localhost:5173
+DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_mysql_password
 DB_NAME=sarathi_sampark_db
-
-# Authentication Secrets
-JWT_SECRET=sarathi_sampark_super_secret_jwt_key_2026
-JWT_EXPIRES_IN=7d
+DATABASE_URL=mysql://root:your_mysql_password@127.0.0.1:3306/sarathi_sampark_db
+JWT_SECRET=sarathi_sampark_secure_jwt_secret_key_2026
+ADMIN_EMAILS=admin@sarathi.in,admin1@sarathi.in,admin2@sarathi.in,admin3@sarathi.in
 ```
 
 ---
 
-## 🛠️ MySQL Installation & Database Setup
+## 🗄️ Database Setup (Prisma & MySQL Workbench)
 
-### Step 1: Install MySQL Server
-If you don't have MySQL installed:
-- Download and install [MySQL Community Server](https://dev.mysql.com/downloads/mysql/).
-- Ensure the MySQL service is running on port `3306`.
+### Option 1: MySQL Workbench / Direct SQL Schema
 
-### Step 2: Create Database & Schema
-Run the schema script to set up tables and constraints:
+1. Open **MySQL Workbench**.
+2. Run `database/schema.sql` (or `server/database/schema.sql`) to execute DDL table creation.
+3. Run `database/seed.sql` (or `server/database/seed.sql`) to insert initial Indian logistics seed data.
+
+### Option 2: Prisma ORM
+
 ```bash
-mysql -u root -p < server/database/schema.sql
+cd server
+npx prisma generate
+npx prisma db push
+npm run seed
 ```
-
-### Step 3: Seed Sample Logistics Data
-Populate the database with sample trucks, loads, documents, and users:
-```bash
-mysql -u root -p sarathi_sampark_db < server/database/seed.sql
-```
-*Alternatively, running `npm run seed` inside `server/` will automatically initialize and populate the database.*
 
 ---
 
-## 🚀 How to Run the Application
+## ⚙️ Running the Project Locally
 
-### 1. Start the Backend API Server
+### 1. Start Express Backend Server
+
 ```bash
 cd server
 npm install
 npm run dev
 ```
-- Express API running at: `http://localhost:5000`
-- API Health Check: `http://localhost:5000/api/health`
+*Backend API will run on `http://localhost:5000`*
 
-### 2. Start the Frontend Web Application
-In a separate terminal:
+### 2. Start Vite React Frontend
+
 ```bash
 cd client
 npm install
 npm run dev
 ```
-- Vite Dev Server running at: `http://localhost:5173`
+*Frontend application will run on `http://localhost:5173`*
 
 ---
 
-## 📡 API Endpoints Overview
+## 🔌 API Endpoints Summary
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| **POST** | `/api/auth/register` | Register new user with bcrypt password hash |
-| **POST** | `/api/auth/login` | Log in user and return JWT token |
-| **GET** | `/api/auth/me` | Fetch authenticated user profile |
-| **GET** | `/api/trucks` | Get all fleet trucks |
-| **POST** | `/api/trucks` | Add a new truck to fleet |
-| **GET** | `/api/drivers` | Get driver roster |
-| **POST** | `/api/drivers` | Add a new driver |
-| **GET** | `/api/loads` | Get return loads marketplace listings |
-| **POST** | `/api/loads` | Post a new return load |
-| **POST** | `/api/loads/accept` | Accept a load, assign truck, create active trip & delivery |
-| **GET** | `/api/trips` | Get active and completed trips |
-| **POST** | `/api/trips` | Create new dispatch trip |
-| **GET** | `/api/deliveries` | Get delivery status |
-| **GET** | `/api/documents` | Get digital compliance repository |
-| **POST** | `/api/documents` | Upload compliance document |
-| **GET** | `/api/fuel` | Get fuel metrics and anomaly alerts |
-| **POST** | `/api/fuel` | Log diesel refill and compute KM/L efficiency |
-| **GET** | `/api/maintenance` | Get maintenance records |
-| **POST** | `/api/maintenance` | Schedule vehicle servicing |
-| **GET** | `/api/expenses` | Get P&L operating expenses |
-| **POST** | `/api/expenses` | Log new expense |
-| **GET** | `/api/notifications` | Get user notifications |
-| **PUT** | `/api/notifications/:id/read` | Mark alert as read |
-| **GET** | `/api/admin/transporters` | Get admin transporter KYC verification queue |
-| **GET** | `/api/admin/shippers` | Get admin shipper approval queue |
+### Authentication
+* `POST /api/auth/register` - Create user account
+* `POST /api/auth/login` - Authenticate & return JWT
+* `GET  /api/auth/me` - Fetch authenticated user session
+* `POST /api/auth/logout` - Logout & destroy session
+
+### Return Load Marketplace
+* `GET  /api/loads` - Fetch return loads
+* `POST /api/loads` - Create return load (Shippers)
+* `POST /api/loads/accept` (or `POST /api/loads/:id/accept`) - Transporter load acceptance transaction
+
+### Fleet & Operations
+* `GET/POST/PUT/DELETE /api/trucks` - Truck registry CRUD
+* `GET/POST/PUT/DELETE /api/drivers` - Driver roster CRUD
+* `GET/POST/PUT/DELETE /api/trips` - Trip lifecycle CRUD
+* `GET/PUT /api/deliveries` - Delivery tracking
+* `GET/POST/PUT/DELETE /api/documents` - Digital compliance documents
+* `GET/POST /api/fuel` - Fuel logs & anomaly alerts
+* `GET/POST /api/maintenance` - Workshop maintenance logs
+* `GET/POST/DELETE /api/expenses` - Operational expenses
+* `GET/POST /api/revenue` - Platform P&L revenue statistics
+* `GET /api/analytics/dashboard` - Real-time MySQL aggregate metrics
+* `GET/PUT/DELETE /api/notifications` - Real-time system notifications
+* `POST /api/contact` - Public website contact form submission
 
 ---
 
-## 🔍 Troubleshooting Instructions
+## 🛡️ License
 
-1. **MySQL Connection Error (`ECONNREFUSED 127.0.0.1:3306`):**
-   - Check if MySQL service is running (`net start MySQL80` on Windows or `sudo service mysql start` on Linux).
-   - Verify `DB_HOST`, `DB_USER`, `DB_PASSWORD`, and `DB_PORT` in `server/.env`.
-   - The server automatically handles database initialization and falls back gracefully to local storage if MySQL is temporarily unreachable.
-
-2. **JWT Authentication Error:**
-   - If receiving 401 Unauthorized errors, ensure `sarathi_token` is saved in `localStorage`. Logging out and logging back in regenerates a valid JWT token.
-
-3. **CORS Error:**
-   - The backend server has `cors()` enabled for `http://localhost:5173`.
+Copyright © 2026 Sarathi Sampark Logistics Tech Platform. All rights reserved.
