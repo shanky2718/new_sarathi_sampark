@@ -28,7 +28,8 @@ export async function initDatabase(): Promise<boolean> {
       waitForConnections: true,
       connectionLimit: 15,
       queueLimit: 0,
-      multipleStatements: true
+      multipleStatements: true,
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
     });
 
     // 2. Test pool connection
