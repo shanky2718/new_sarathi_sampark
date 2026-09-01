@@ -1,11 +1,15 @@
 import mysql from 'mysql2/promise';
-import fs from 'fs';
+import dotenv from 'dotenv';
 import path from 'path';
+
+// Load environment variables from process.env, root .env, or server/.env
+dotenv.config();
+dotenv.config({ path: path.resolve(process.cwd(), 'server/.env') });
 
 const DB_HOST = process.env.DB_HOST || '127.0.0.1';
 const DB_PORT = parseInt(process.env.DB_PORT || '3306', 10);
 const DB_USER = process.env.DB_USER || 'root';
-const DB_PASSWORD = process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : '';
+const DB_PASSWORD = process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : 'Shashv@2715';
 const DB_NAME = process.env.DB_NAME || 'sarathi_sampark_db';
 
 let pool: mysql.Pool | null = null;
@@ -33,6 +37,7 @@ export async function getDbPool(): Promise<mysql.Pool | null> {
   } catch (err: any) {
     isMySQLConnected = false;
     lastConnectionError = err.message;
+    console.warn('MySQL pool initialization error:', err.message);
     return null;
   }
 }
