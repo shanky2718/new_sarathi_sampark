@@ -10,26 +10,30 @@ export async function GET(req: Request) {
 
     const pool = await getDbPool();
     if (pool) {
-      const [users]: any = await pool.execute(
-        'SELECT id, name, email, mobile, role, company_name, gst_number, city, onboarded FROM users WHERE email = ?',
-        [userEmail]
-      );
-      if (users.length > 0) {
-        const u = users[0];
-        const isAuthorizedAdmin = authorizedAdmins.includes(u.email.toLowerCase());
-        const finalRole = isAuthorizedAdmin ? 'Admin' : (u.role === 'Admin' ? 'Transporter' : u.role);
+      try {
+        const [users]: any = await pool.execute(
+          'SELECT id, name, email, mobile, role, company_name, gst_number, city, onboarded FROM users WHERE email = ?',
+          [userEmail]
+        );
+        if (users.length > 0) {
+          const u = users[0];
+          const isAuthorizedAdmin = authorizedAdmins.includes(u.email.toLowerCase());
+          const finalRole = isAuthorizedAdmin ? 'Admin' : (u.role === 'Admin' ? 'Transporter' : u.role);
 
-        return NextResponse.json({
-          id: u.id,
-          name: u.name,
-          email: u.email,
-          mobile: u.mobile,
-          role: finalRole,
-          companyName: u.company_name,
-          gstNumber: u.gst_number,
-          city: u.city,
-          onboarded: Boolean(u.onboarded)
-        });
+          return NextResponse.json({
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            mobile: u.mobile,
+            role: finalRole,
+            companyName: u.company_name,
+            gstNumber: u.gst_number,
+            city: u.city,
+            onboarded: Boolean(u.onboarded)
+          });
+        }
+      } catch (dbErr: any) {
+        console.warn('MySQL pool execute error during /api/auth/me:', dbErr.message);
       }
     }
 
