@@ -1,0 +1,37 @@
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './context/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        sand: {
+          DEFAULT: '#F5F2EB',
+          dark: '#E4DFD5',
+          light: '#FAF9F6',
+        },
+        charcoal: {
+          DEFAULT: '#1E1E1C',
+          light: '#2E2E2C',
+          dark: '#111110',
+        },
+        gold: {
+          DEFAULT: '#C59B27',
+          light: '#E2B22E',
+          dark: '#A68220',
+        },
+      },
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'Outfit', 'Inter', 'sans-serif'],
+        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;
