@@ -53,8 +53,8 @@ app.get('/api/health', (req, res) => {
 const startServer = async () => {
   await initDatabase();
   
-  app.listen(PORT, () => {
-    console.log(`🚀 Sarathi Sampark Express API running on http://localhost:${PORT}`);
+  app.listen(Number(PORT), '0.0.0.0', () => {
+    console.log(`🚀 Sarathi Sampark Express API running on port ${PORT}`);
   });
 };
 

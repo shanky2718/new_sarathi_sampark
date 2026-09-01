@@ -29,6 +29,7 @@ export async function initDatabase(): Promise<boolean> {
       connectionLimit: 15,
       queueLimit: 0,
       multipleStatements: true,
+      connectTimeout: 5000,
       ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
     });
 
