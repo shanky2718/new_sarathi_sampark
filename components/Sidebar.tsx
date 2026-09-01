@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useData } from '@/context/DataContext';
+import { Logo } from '@/components/Logo';
 
 interface SidebarProps {
   currentTab: string;
@@ -73,21 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setTab, isOpen, on
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         <div className="flex h-20 items-center justify-between border-b border-stone-200 px-6 bg-[#FAF9F6]">
-          <div className="flex items-center space-x-2.5">
-            <img 
-              src="/logo.png" 
-              alt="Sarathi Samparka Logo" 
-              className="h-11 w-auto object-contain rounded-lg shadow-sm"
-            />
-            <div>
-              <h1 className="text-base font-black tracking-tight leading-none text-[#0B1320]">
-                SARATHI <span className="text-amber-600">SAMPARKA</span>
-              </h1>
-              <p className="text-[9px] uppercase tracking-wider text-charcoal/60 font-bold mt-0.5">
-                Load Optimisation Platform
-              </p>
-            </div>
-          </div>
+          <Logo size="md" />
           <button 
             onClick={onClose} 
             className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 hover:bg-stone-200 lg:hidden"

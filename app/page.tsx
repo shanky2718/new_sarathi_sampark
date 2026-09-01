@@ -26,7 +26,6 @@ import NotificationsPage from '@/components/pages/NotificationsPage';
 
 import { Sidebar } from '@/components/Sidebar';
 import { Topbar } from '@/components/Topbar';
-import { IntroAnimation } from '@/components/IntroAnimation';
 import { RefreshCw } from 'lucide-react';
 
 export default function Home() {
@@ -66,65 +65,56 @@ export default function Home() {
     );
   }
 
-  const renderMainContent = () => {
-    if (!user) {
-      if (currentPage === 'login') return <Login onNavigate={handleNavigate} />;
-      if (currentPage === 'register') return <Register onNavigate={handleNavigate} />;
-      return <LandingPage onNavigate={handleNavigate} />;
+  if (!user) {
+    if (currentPage === 'login') return <Login onNavigate={handleNavigate} />;
+    if (currentPage === 'register') return <Register onNavigate={handleNavigate} />;
+    return <LandingPage onNavigate={handleNavigate} />;
+  }
+
+  if (!user.onboarded) {
+    return <Onboarding onComplete={handleOnboardingComplete} />;
+  }
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'dashboard': return <Dashboard onNavigateTab={setActiveTab} />;
+      case 'fleet': return <Fleet />;
+      case 'drivers': return <Drivers />;
+      case 'return-loads': return <ReturnLoads />;
+      case 'trips': return <Trips />;
+      case 'tracking': return <LiveTracking />;
+      case 'deliveries': return <Deliveries />;
+      case 'documents': return <Documents />;
+      case 'fuel': return <FuelManagement />;
+      case 'maintenance': return <Maintenance />;
+      case 'expenses': return <Expenses />;
+      case 'revenue': return <Revenue />;
+      case 'analytics': return <Analytics />;
+      case 'notifications': return <NotificationsPage />;
+      case 'settings': return <Settings />;
+      case 'admin': return <AdminDashboard />;
+      default: return <Dashboard onNavigateTab={setActiveTab} />;
     }
-
-    if (!user.onboarded) {
-      return <Onboarding onComplete={handleOnboardingComplete} />;
-    }
-
-    const renderTabContent = () => {
-      switch (activeTab) {
-        case 'dashboard': return <Dashboard onNavigateTab={setActiveTab} />;
-        case 'fleet': return <Fleet />;
-        case 'drivers': return <Drivers />;
-        case 'return-loads': return <ReturnLoads />;
-        case 'trips': return <Trips />;
-        case 'tracking': return <LiveTracking />;
-        case 'deliveries': return <Deliveries />;
-        case 'documents': return <Documents />;
-        case 'fuel': return <FuelManagement />;
-        case 'maintenance': return <Maintenance />;
-        case 'expenses': return <Expenses />;
-        case 'revenue': return <Revenue />;
-        case 'analytics': return <Analytics />;
-        case 'notifications': return <NotificationsPage />;
-        case 'settings': return <Settings />;
-        case 'admin': return <AdminDashboard />;
-        default: return <Dashboard onNavigateTab={setActiveTab} />;
-      }
-    };
-
-    return (
-      <div className="flex h-screen w-screen overflow-hidden bg-[#FAF9F6] font-sans">
-        <Sidebar 
-          currentTab={activeTab} 
-          setTab={setActiveTab} 
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-        />
-        <div className="flex flex-1 flex-col overflow-hidden bg-[#FAF9F6]">
-          <Topbar 
-            currentTab={activeTab}
-            onMenuToggle={() => setSidebarOpen(true)}
-            onNavigateTab={setActiveTab}
-          />
-          <main className="flex-1 overflow-hidden relative">
-            {renderTabContent()}
-          </main>
-        </div>
-      </div>
-    );
   };
 
   return (
-    <>
-      <IntroAnimation />
-      {renderMainContent()}
-    </>
+    <div className="flex h-screen w-screen overflow-hidden bg-[#FAF9F6] font-sans">
+      <Sidebar 
+        currentTab={activeTab} 
+        setTab={setActiveTab} 
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      <div className="flex flex-1 flex-col overflow-hidden bg-[#FAF9F6]">
+        <Topbar 
+          currentTab={activeTab}
+          onMenuToggle={() => setSidebarOpen(true)}
+          onNavigateTab={setActiveTab}
+        />
+        <main className="flex-1 overflow-hidden relative">
+          {renderTabContent()}
+        </main>
+      </div>
+    </div>
   );
 }

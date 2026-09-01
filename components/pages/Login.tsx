@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Lock, Mail, Eye, EyeOff, AlertCircle, ArrowRight, UserCheck } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 
 interface LoginProps {
   onNavigate: (page: string) => void;
@@ -52,20 +53,8 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-[#FAF9F6] font-sans flex text-charcoal">
       <div className="flex-1 flex flex-col justify-center py-12 px-6 sm:px-12 lg:flex-none lg:w-[500px] bg-white border-r border-stone-200">
         <div className="w-full max-w-sm mx-auto space-y-6">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => onNavigate('landing')}>
-            <img 
-              src="/logo.png" 
-              alt="Sarathi Samparka Logo" 
-              className="h-14 w-auto object-contain rounded-xl shadow-md"
-            />
-            <div>
-              <span className="text-xl font-black tracking-tight text-[#0B1320] block leading-none">
-                SARATHI <span className="text-amber-600">SAMPARKA</span>
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-amber-700 font-bold">
-                Load Optimisation Platform
-              </span>
-            </div>
+          <div className="cursor-pointer" onClick={() => onNavigate('landing')}>
+            <Logo size="lg" />
           </div>
 
           <div>

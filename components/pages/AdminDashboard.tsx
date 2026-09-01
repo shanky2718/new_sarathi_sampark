@@ -47,9 +47,28 @@ const AdminDashboard: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200">
-          <Activity className="h-4 w-4 text-emerald-600 animate-pulse" />
-          <span className="text-xs font-bold text-emerald-900">Platform Operational • 99.9% Uptime</span>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={async () => {
+              if (confirm('Are you sure you want to erase old database data and re-seed clean default records?')) {
+                try {
+                  const res = await fetch('/api/admin/reset-db', { method: 'POST' });
+                  const data = await res.json();
+                  alert(data.message || data.error || 'Database reset complete!');
+                  window.location.reload();
+                } catch (e: any) {
+                  alert('Reset error: ' + e.message);
+                }
+              }
+            }}
+            className="flex items-center gap-1.5 bg-rose-900 text-rose-50 px-3.5 py-2 rounded-xl text-xs font-bold hover:bg-rose-950 transition border border-rose-700 shadow-sm"
+          >
+            Erase & Reset Clean DB
+          </button>
+          <div className="flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200">
+            <Activity className="h-4 w-4 text-emerald-600 animate-pulse" />
+            <span className="text-xs font-bold text-emerald-900">Platform Operational</span>
+          </div>
         </div>
       </div>
 

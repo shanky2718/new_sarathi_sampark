@@ -14,6 +14,7 @@ import {
   ArrowLeft,
   Briefcase
 } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 
 interface RegisterProps {
   onNavigate: (page: string) => void;
@@ -100,15 +101,8 @@ export const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-charcoal font-sans flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-[#0B1320] text-center space-y-2">
-        <div className="flex items-center justify-center space-x-3">
-          <img 
-            src="/logo.png" 
-            alt="Sarathi Samparka Logo" 
-            className="h-14 w-auto object-contain rounded-xl shadow-md"
-          />
-          <span className="text-2xl font-black tracking-tight text-[#0B1320]">
-            SARATHI <span className="text-amber-600">SAMPARKA</span>
-          </span>
+        <div className="flex items-center justify-center cursor-pointer" onClick={() => onNavigate('landing')}>
+          <Logo size="lg" />
         </div>
         <h2 className="text-xl font-extrabold text-[#0B1320]">
           Create Your Transporter Account

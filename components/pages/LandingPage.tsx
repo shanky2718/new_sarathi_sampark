@@ -18,6 +18,7 @@ import {
   PhoneCall,
   Mail
 } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 
 interface LandingPageProps {
   onNavigate: (page: string) => void;
@@ -50,18 +51,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
     <div className="min-h-screen bg-[#FAF9F6] text-charcoal font-sans selection:bg-amber-400 selection:text-[#0B1320]">
       <header className="sticky top-0 z-50 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-stone-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex h-20 items-center justify-between">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveSection('home')}>
-            <img 
-              src="/logo.png" 
-              alt="Sarathi Samparka Logo" 
-              className="h-14 w-auto object-contain rounded-xl shadow-md"
-            />
-            <div>
-              <span className="text-xl font-black tracking-tight text-[#0B1320] block leading-none">
-                SARATHI <span className="text-amber-600">SAMPARKA</span>
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-amber-700 font-bold">Load Optimisation Platform</span>
-            </div>
+          <div className="cursor-pointer" onClick={() => setActiveSection('home')}>
+            <Logo size="lg" />
           </div>
 
           <nav className="hidden md:flex items-center space-x-6 text-xs font-bold text-charcoal/80">
