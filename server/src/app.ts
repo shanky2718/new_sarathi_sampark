@@ -47,26 +47,31 @@ app.use((req, res, next) => {
 // Initialize MySQL asynchronously if connected
 initDatabase().catch(err => console.error('Database initialization error:', err));
 
-// Mount API Routes
-app.use('/api/auth', authRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/trucks', trucksRouter);
-app.use('/api/drivers', driversRouter);
-app.use('/api/loads', loadsRouter);
-app.use('/api/trips', tripsRouter);
-app.use('/api/deliveries', deliveriesRouter);
-app.use('/api/documents', documentsRouter);
-app.use('/api/fuel', fuelRouter);
-app.use('/api/maintenance', maintenanceRouter);
-app.use('/api/expenses', expensesRouter);
-app.use('/api/revenue', revenueRouter);
-app.use('/api/analytics', analyticsRouter);
-app.use('/api/notifications', notificationsRouter);
-app.use('/api/admin', adminRouter);
-app.use('/api/contact', contactRouter);
+// Helper to mount routes on both /api/path and /path
+const mount = (routePath: string, router: any) => {
+  app.use(`/api${routePath}`, router);
+  app.use(routePath, router);
+};
+
+mount('/auth', authRouter);
+mount('/users', usersRouter);
+mount('/trucks', trucksRouter);
+mount('/drivers', driversRouter);
+mount('/loads', loadsRouter);
+mount('/trips', tripsRouter);
+mount('/deliveries', deliveriesRouter);
+mount('/documents', documentsRouter);
+mount('/fuel', fuelRouter);
+mount('/maintenance', maintenanceRouter);
+mount('/expenses', expensesRouter);
+mount('/revenue', revenueRouter);
+mount('/analytics', analyticsRouter);
+mount('/notifications', notificationsRouter);
+mount('/admin', adminRouter);
+mount('/contact', contactRouter);
 
 // Health check API endpoint
-app.get('/api/health', (req, res) => {
+app.get(['/api/health', '/health'], (req, res) => {
   res.json({ 
     status: 'UP', 
     timestamp: new Date().toISOString(), 
