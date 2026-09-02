@@ -26,7 +26,14 @@ dotenv.config();
 export const app = express();
 
 // Express Middleware
-app.use(cors());
+const allowedOrigins = process.env.FRONTEND_URL 
+  ? [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000']
+  : '*';
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(express.json());
 
 // Normalize API route prefix for Vercel serverless functions

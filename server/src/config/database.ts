@@ -64,6 +64,21 @@ export async function initDatabase(): Promise<boolean> {
       console.log('✅ MySQL Database Schema verified/created successfully.');
     }
 
+    // 4. Run Seed DDL if users table is empty
+    try {
+      const [rows]: any = await pool.query('SELECT COUNT(*) as count FROM users');
+      if (rows && rows[0] && rows[0].count === 0) {
+        const seedPath = path.join(__dirname, '../../database/seed.sql');
+        if (fs.existsSync(seedPath)) {
+          const seedSql = fs.readFileSync(seedPath, 'utf8');
+          await pool.query(seedSql);
+          console.log('🌱 MySQL Seed Data populated successfully.');
+        }
+      }
+    } catch (seedErr: any) {
+      console.warn('Seed initialization notice:', seedErr?.message || seedErr);
+    }
+
     return true;
   } catch (error: any) {
     isMySQLConnected = false;
