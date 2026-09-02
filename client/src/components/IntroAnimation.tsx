@@ -183,7 +183,7 @@ export const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete, forc
           }`}
         >
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider text-white uppercase font-sans drop-shadow-md">
-            SARATHI <span className="text-gold-shimmer">SAMPARKA</span>
+            SAMPARKA <span className="text-gold-shimmer">SARATHI</span>
           </h1>
         </div>
 
@@ -276,7 +276,7 @@ export const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete, forc
       {/* Bottom Bar: Skip Intro Button & Copyright */}
       <div className="w-full pb-6 px-8 flex justify-between items-center z-20">
         <span className="text-[11px] text-slate-500 font-medium hidden sm:inline">
-          © 2026 Sarathi Samparka Logistics Platform
+          © 2026 Samparka Sarathi Logistics Platform
         </span>
 
         {/* Skip Intro Button */}

@@ -28,7 +28,7 @@ router.post('/', async (req: AuthRequest, res: Response) => {
 
       return res.status(201).json({
         success: true,
-        message: 'Thank you for reaching out to Sarathi Sampark! Our logistics technical specialist will contact you shortly.'
+        message: 'Thank you for reaching out to Samparka Sarathi! Our logistics technical specialist will contact you shortly.'
       });
     }
 

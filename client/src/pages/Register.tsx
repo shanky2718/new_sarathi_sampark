@@ -111,7 +111,7 @@ export const Register: React.FC<RegisterProps> = ({ onNavigate }) => {
             className="h-14 w-auto object-contain rounded-xl shadow-md"
           />
           <span className="text-2xl font-black tracking-tight text-[#0B1320]">
-            SARATHI <span className="text-amber-600">SAMPARKA</span>
+            SAMPARKA <span className="text-amber-600">SARATHI</span>
           </span>
         </div>
         <h2 className="text-xl font-extrabold text-[#0B1320]">

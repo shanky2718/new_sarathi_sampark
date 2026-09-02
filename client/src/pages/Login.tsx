@@ -62,7 +62,7 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
             />
             <div>
               <span className="text-xl font-black tracking-tight text-[#0B1320] block leading-none">
-                SARATHI <span className="text-amber-600">SAMPARKA</span>
+                SAMPARKA <span className="text-amber-600">SARATHI</span>
               </span>
               <span className="text-[10px] uppercase tracking-wider text-amber-700 font-bold">
                 Load Optimisation Platform
@@ -205,8 +205,8 @@ export const Login: React.FC<LoginProps> = ({ onNavigate }) => {
         </div>
 
         <div className="relative z-10 flex items-center justify-between border-t border-slate-800 pt-6 text-xs text-slate-400">
-          <span>© 2026 Sarathi Sampark Logistics Pvt Ltd</span>
-          <span>1800-419-7700 Helpdesk</span>
+          <span>© 2026 Samparka Sarathi Logistics Tech</span>
+          <span>Somwar Pete, Kittur, Belagavi District, Karnataka</span>
         </div>
       </div>
 

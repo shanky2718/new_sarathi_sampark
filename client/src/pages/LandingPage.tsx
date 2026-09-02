@@ -129,7 +129,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             />
             <div>
               <span className="text-xl font-black tracking-tight text-[#0B1320] block leading-none">
-                SARATHI <span className="text-amber-600">SAMPARKA</span>
+                SAMPARKA <span className="text-amber-600">SARATHI</span>
               </span>
               <span className="text-[10px] uppercase tracking-wider text-amber-700 font-bold">Load Optimisation Platform</span>
             </div>
@@ -562,38 +562,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             {/* Contact Info Card */}
             <div className="bg-[#0B1320] text-white p-8 rounded-3xl space-y-6 shadow-xl border border-slate-800">
               <div className="space-y-2">
-                <h3 className="text-xl font-extrabold text-amber-400">Sarathi Sampark Technical Support</h3>
-                <p className="text-xs text-slate-300">Bharat Logistics Technology Private Limited</p>
+                <h3 className="text-xl font-extrabold text-amber-400">Samparka Sarathi Technical Support</h3>
+                <p className="text-xs text-slate-300">Samparka Sarathi Logistics Tech</p>
               </div>
 
               <div className="space-y-4 text-xs text-slate-300 pt-2 border-t border-slate-800">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 bg-slate-900 rounded-xl text-amber-400 border border-slate-800">
-                    <PhoneCall className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-white">Toll-Free Support Helpline</p>
-                    <p className="text-slate-400">1800-419-7700 (24/7 Transporter Desk)</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-slate-900 rounded-xl text-amber-400 border border-slate-800">
-                    <Mail className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-white">Official Email</p>
-                    <p className="text-slate-400">support@sarathisampark.in</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-slate-900 rounded-xl text-amber-400 border border-slate-800">
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="font-bold text-white">Headquarters Office</p>
-                    <p className="text-slate-400">142, 4th Block, Industrial Layout, Koramangala, Bengaluru, KA - 560034</p>
+                    <p className="font-bold text-white">Headquarters Address</p>
+                    <p className="text-slate-400">Somwar Pete, Kittur, Belagavi District, Karnataka, India</p>
                   </div>
                 </div>
               </div>
@@ -702,15 +682,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             <div className="flex items-center space-x-3">
               <img 
                 src="/logo.png" 
-                alt="Sarathi Samparka Logo" 
+                alt="Samparka Sarathi Logo" 
                 className="h-12 w-auto object-contain rounded-lg shadow-md"
               />
-              <span className="text-lg font-black tracking-tight text-white">SARATHI SAMPARKA</span>
+              <span className="text-lg font-black tracking-tight text-white">SAMPARKA SARATHI</span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               "Connecting Every Journey. Empowering Every Sarathi."
             </p>
-            <p className="text-xs text-slate-400">Bharat Logistics Tech Pvt Ltd</p>
+            <p className="text-xs text-slate-400">Samparka Sarathi Logistics Tech</p>
           </div>
 
           <div className="space-y-2 text-xs text-slate-300">
@@ -723,10 +703,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="space-y-2 text-xs text-slate-300">
-            <p className="font-bold text-white uppercase tracking-wider mb-2">Support Helpline</p>
-            <p className="flex items-center gap-2"><PhoneCall className="h-3.5 w-3.5 text-amber-400" /> 1800-419-7700 (Toll Free)</p>
-            <p className="flex items-center gap-2"><Mail className="h-3.5 w-3.5 text-amber-400" /> support@sarathisampark.in</p>
-            <p className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-amber-400" /> Koramangala 4th Block, Bengaluru</p>
+            <p className="font-bold text-white uppercase tracking-wider mb-2">Office Address</p>
+            <p className="flex items-center gap-2"><Building2 className="h-3.5 w-3.5 text-amber-400" /> Somwar Pete, Kittur, Belagavi District, Karnataka, India</p>
           </div>
 
           <div className="space-y-3">
@@ -749,7 +727,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
-          © 2026 Sarathi Sampark Logistics Platform. All Rights Reserved. Built for Bharat Freight.
+          © 2026 Samparka Sarathi Logistics Platform. All Rights Reserved. Built for Bharat Freight.
         </div>
       </footer>
 
@@ -781,7 +759,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                 <span>BHARAT LOGISTICS TECHNOLOGY PLATFORM</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-[#0B1320] tracking-tight">
-                Welcome to Sarathi Sampark
+                Welcome to Samparka Sarathi
               </h2>
               <p className="text-xs text-charcoal/80 max-w-sm mx-auto leading-relaxed">
                 Connecting Every Journey. Empowering Every Sarathi. Please log in or create an account to access the Return Load Marketplace.

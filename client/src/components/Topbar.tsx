@@ -77,9 +77,9 @@ export const Topbar: React.FC<TopbarProps> = ({ currentTab, onMenuToggle }) => {
 
         {/* Support Help */}
         <button 
-          onClick={() => alert("Sarathi Sampark 24x7 Transporter Support Helpline: 1800-419-7700")}
+          onClick={() => alert("Samparka Sarathi | Headquarters Address: Somwar Pete, Kittur, Belagavi District, Karnataka, India")}
           className="flex h-10 w-10 items-center justify-center rounded-xl border border-stone-200 text-charcoal/70 hover:bg-stone-100 transition-colors"
-          title="24x7 Transporter Helpline"
+          title="Headquarters Address Info"
         >
           <HelpCircle className="h-5 w-5" />
         </button>

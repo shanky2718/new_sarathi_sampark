@@ -83,7 +83,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, setTab, isOpen, on
             />
             <div>
               <h1 className="text-base font-black tracking-tight leading-none text-[#0B1320]">
-                SARATHI <span className="text-amber-600">SAMPARKA</span>
+                SAMPARKA <span className="text-amber-600">SARATHI</span>
               </h1>
               <p className="text-[9px] uppercase tracking-wider text-charcoal/60 font-bold mt-0.5">
                 Load Optimisation Platform
