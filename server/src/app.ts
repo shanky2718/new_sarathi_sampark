@@ -29,6 +29,14 @@ export const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Normalize API route prefix for Vercel serverless functions
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api') && !req.path.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+  next();
+});
+
 // Initialize MySQL asynchronously if connected
 initDatabase().catch(err => console.error('Database initialization error:', err));
 

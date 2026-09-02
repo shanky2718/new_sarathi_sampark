@@ -17,6 +17,16 @@ export let lastConnectionError: string | null = null;
 
 // Initialize MySQL Pool strictly using environment variables
 export async function initDatabase(): Promise<boolean> {
+  if (isMySQLConnected && pool) return true;
+
+  // On Vercel without external DB host, skip connecting to localhost
+  if (process.env.VERCEL === '1' && (!process.env.DB_HOST || process.env.DB_HOST === '127.0.0.1' || process.env.DB_HOST === 'localhost')) {
+    isMySQLConnected = false;
+    lastConnectionError = 'Vercel Environment: DB_HOST not configured for external MySQL database. Using fallback mode.';
+    console.log('MYSQL STATUS: DISCONNECTED (Vercel Fallback Mode active)');
+    return false;
+  }
+
   try {
     // 1. Create Connection Pool directly using environment credentials
     pool = mysql.createPool({
@@ -26,10 +36,10 @@ export async function initDatabase(): Promise<boolean> {
       password: DB_PASSWORD,
       database: DB_NAME,
       waitForConnections: true,
-      connectionLimit: 15,
+      connectionLimit: 10,
       queueLimit: 0,
       multipleStatements: true,
-      connectTimeout: 5000,
+      connectTimeout: 2000,
       ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined
     });
 
