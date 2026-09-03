@@ -255,20 +255,25 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
           <div className="flex items-center space-x-1.5">
             {[1, 2, 3, 4, 5].map((s) => (
               <React.Fragment key={s}>
-                <div className={`h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all ${
-                  s === step 
-                    ? 'bg-charcoal text-[#F5F2EB]' 
-                    : s < step 
-                      ? 'bg-green-700 text-[#FAF9F6]' 
-                      : 'border border-charcoal/10 bg-white/40 text-charcoal/40'
-                }`}>
-                  {s < step ? <Check className="h-3 w-3" /> : `0${s}`}
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setStep(s)}
+                  title={`Go to Step ${s}`}
+                  className={`h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-bold transition-all cursor-pointer hover:scale-110 ${
+                    s === step 
+                      ? 'bg-[#0B1320] text-amber-400 ring-2 ring-amber-500 shadow-md' 
+                      : s < step 
+                        ? 'bg-emerald-700 text-white' 
+                        : 'border border-charcoal/20 bg-white text-charcoal/60 hover:bg-charcoal/10'
+                  }`}
+                >
+                  {s < step ? <Check className="h-3.5 w-3.5" /> : `0${s}`}
+                </button>
                 {s < 5 && <span className="text-charcoal/20 text-xs">→</span>}
               </React.Fragment>
             ))}
           </div>
-          <span className="text-[10px] font-bold text-gold uppercase tracking-wider">Step {step} of 5</span>
+          <span className="text-[11px] font-extrabold text-amber-700 uppercase tracking-wider bg-amber-100 px-2.5 py-1 rounded-md border border-amber-300">Step {step} of 5</span>
         </div>
 
         <div className="flex-1 flex flex-col justify-center">
@@ -278,8 +283,9 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
         <div className="flex items-center justify-between pt-6 border-t border-charcoal/5 mt-6">
           {step > 1 && step < 5 ? (
             <button
+              type="button"
               onClick={handleBack}
-              className="flex items-center space-x-1.5 rounded-lg border border-charcoal/10 px-4 py-2.5 text-xs font-semibold text-charcoal/70 hover:bg-charcoal/5 transition-colors"
+              className="flex items-center space-x-1.5 rounded-xl border border-charcoal/20 px-4 py-2.5 text-xs font-bold text-charcoal hover:bg-stone-200 transition-colors cursor-pointer"
             >
               <ArrowLeft className="h-4.5 w-4.5" />
               <span>Back</span>
@@ -291,26 +297,29 @@ export const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
           {step < 5 ? (
             <div className="flex items-center space-x-3">
               <button
+                type="button"
                 onClick={handleNext}
-                className="text-xs font-bold text-charcoal/50 hover:text-charcoal px-3 py-2"
+                className="text-xs font-bold text-charcoal/60 hover:text-charcoal px-3 py-2 cursor-pointer hover:underline"
               >
                 Skip Step
               </button>
               <button
+                type="button"
                 onClick={handleNext}
-                className="flex items-center space-x-1.5 rounded-lg bg-charcoal text-[#F5F2EB] px-5 py-2.5 text-xs font-bold uppercase tracking-wider hover:bg-charcoal-dark shadow hover:shadow-md transition-all"
+                className="flex items-center space-x-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 px-6 py-3 text-xs font-black uppercase tracking-wider shadow-lg hover:shadow-xl transition-all cursor-pointer border border-amber-400"
               >
-                <span>Continue</span>
-                <ArrowRight className="h-4 w-4 text-[#C59B27]" />
+                <span>Next Step</span>
+                <ArrowRight className="h-4 w-4 text-slate-950 stroke-[3]" />
               </button>
             </div>
           ) : (
             <button
+              type="button"
               onClick={handleFinish}
-              className="w-full flex items-center justify-center space-x-2 rounded-lg bg-charcoal text-[#F5F2EB] py-3 text-xs font-bold uppercase tracking-wider hover:bg-charcoal-dark shadow-md hover:shadow-lg transition-all"
+              className="w-full flex items-center justify-center space-x-2 rounded-xl bg-[#0B1320] text-white py-3.5 text-xs font-black uppercase tracking-wider hover:bg-slate-800 shadow-xl transition-all cursor-pointer border border-amber-500"
             >
               <span>Launch Operations Dashboard</span>
-              <ArrowRight className="h-4 w-4 text-[#C59B27]" />
+              <ArrowRight className="h-4 w-4 text-amber-400 stroke-[3]" />
             </button>
           )}
         </div>
