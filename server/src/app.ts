@@ -71,7 +71,7 @@ mount('/admin', adminRouter);
 mount('/contact', contactRouter);
 
 // Health check API endpoint
-app.get(['/api/health', '/health'], (req, res) => {
+app.get(['/api/health', '/health', '/api', '/'], (req, res) => {
   res.json({ 
     status: 'UP', 
     timestamp: new Date().toISOString(), 
