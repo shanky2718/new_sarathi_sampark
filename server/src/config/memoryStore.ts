@@ -21,6 +21,23 @@ class MemoryStore {
   public deliveries: MockDelivery[] = [...initialDeliveries];
   public expenses: MockExpense[] = [...initialExpenses];
   public notifications: MockNotification[] = [...initialNotifications];
+  public contactMessages: any[] = [];
+
+  getContactMessages() {
+    return this.contactMessages;
+  }
+
+  addContactMessage(msg: any) {
+    const newMsg = {
+      ...msg,
+      id: Date.now(),
+      status: 'Unread',
+      created_at: new Date().toISOString()
+    };
+    this.contactMessages.unshift(newMsg);
+    this.addNotification('info', `New contact message from ${msg.name}`);
+    return newMsg;
+  }
 
   constructor() {
     console.log('📦 MemoryStore initialized with mock datasets.');

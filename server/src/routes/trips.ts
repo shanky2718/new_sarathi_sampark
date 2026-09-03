@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { pool, isMySQLConnected } from '../config/database';
+import memoryStore from '../config/memoryStore';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       }));
       return res.json(formatted);
     }
-    return res.json([]);
+    return res.json(memoryStore.getTrips());
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -47,7 +48,7 @@ router.post('/', async (req: AuthRequest, res: Response) => {
       await pool.execute('UPDATE trucks SET status = "Active", location = ? WHERE truck_id = ?', [origin, truck]);
     }
 
-    return res.status(201).json({
+    const created = memoryStore.addTrip({
       tripId,
       truck,
       driver,
@@ -57,6 +58,8 @@ router.post('/', async (req: AuthRequest, res: Response) => {
       status: status || 'In Progress',
       progress: 0
     });
+
+    return res.status(201).json(created);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

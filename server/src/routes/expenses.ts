@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { pool, isMySQLConnected } from '../config/database';
+import memoryStore from '../config/memoryStore';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       }));
       return res.json(formatted);
     }
-    return res.json([]);
+    return res.json(memoryStore.getExpenses());
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -39,14 +40,15 @@ router.post('/', async (req: AuthRequest, res: Response) => {
       );
     }
 
-    return res.status(201).json({
-      expenseId,
+    const created = memoryStore.addExpense({
       category: category || 'Other',
       amount: amount || 1000,
-      date: date || '2026-08-28',
+      date: date || new Date().toISOString().split('T')[0],
       truck: truck || 'TRK-101',
       description: description || 'Fleet Expense'
     });
+
+    return res.status(201).json(created);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { pool, isMySQLConnected } from '../config/database';
+import memoryStore from '../config/memoryStore';
 
 const router = Router();
 
@@ -25,16 +26,13 @@ router.post('/', async (req: AuthRequest, res: Response) => {
         `INSERT INTO notifications (notif_id, type, message, time_ago, is_read) VALUES (?, 'info', ?, 'Just now', FALSE)`,
         [`NOT-${Date.now().toString().slice(-4)}`, `New Contact Inquiry from ${name} (${email}): "${subject}"`]
       );
-
-      return res.status(201).json({
-        success: true,
-        message: 'Thank you for reaching out to Samparka Sarathi! Our logistics technical specialist will contact you shortly.'
-      });
     }
+
+    memoryStore.addContactMessage({ name, email, mobile, company, subject, message });
 
     return res.status(201).json({
       success: true,
-      message: 'Inquiry received. Our team will get back to you shortly.'
+      message: 'Thank you for reaching out to Samparka Sarathi! Our logistics technical specialist will contact you shortly.'
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message || 'Internal server error while saving contact message' });
@@ -48,7 +46,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       const [rows]: any = await pool.execute('SELECT * FROM contact_messages ORDER BY id DESC');
       return res.json(rows);
     }
-    return res.json([]);
+    return res.json(memoryStore.getContactMessages());
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

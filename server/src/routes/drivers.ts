@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { pool, isMySQLConnected } from '../config/database';
+import memoryStore from '../config/memoryStore';
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       }));
       return res.json(formatted);
     }
-    return res.json([]);
+    return res.json(memoryStore.getDrivers());
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -41,16 +42,15 @@ router.post('/', async (req: AuthRequest, res: Response) => {
         [name, phone, assignedTruck || 'Unassigned', lNo]
       );
     }
-    return res.status(201).json({
+
+    const created = memoryStore.addDriver({
       name,
       phone,
       assignedTruck: assignedTruck || 'Unassigned',
-      licenseNumber: lNo,
-      tripsCompleted: 0,
-      rating: 4.80,
-      safetyScore: 95,
-      status: 'Active'
+      licenseNumber: lNo
     });
+
+    return res.status(201).json(created);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

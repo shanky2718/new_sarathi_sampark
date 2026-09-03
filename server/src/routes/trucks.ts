@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { AuthRequest, authenticateToken } from '../middleware/auth';
 import { pool, isMySQLConnected } from '../config/database';
+import memoryStore from '../config/memoryStore';
 
 const router = Router();
 
@@ -39,7 +40,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       }));
       return res.json(formatted);
     }
-    return res.json([]);
+    return res.json(memoryStore.getTrucks());
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -60,7 +61,8 @@ router.post('/', async (req: AuthRequest, res: Response) => {
         [userId, tId, pNo, model || 'Tata Prima', type || 'Container', capacity || '20 Tons', driver || 'Unassigned', status || 'Available', location || 'Bengaluru', fuel || 100, mileage || 0]
       );
     }
-    return res.status(201).json({
+
+    const newTruck = memoryStore.addTruck({
       truckId: tId,
       plateNumber: pNo,
       model: model || 'Tata Prima',
@@ -72,6 +74,8 @@ router.post('/', async (req: AuthRequest, res: Response) => {
       fuel: fuel || 100,
       mileage: mileage || 0
     });
+
+    return res.status(201).json(newTruck);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
