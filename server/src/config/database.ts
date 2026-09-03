@@ -57,11 +57,15 @@ export async function initDatabase(): Promise<boolean> {
     console.log('==========================================');
 
     // 3. Run Schema DDL if tables do not exist
-    const schemaPath = path.join(__dirname, '../../database/schema.sql');
-    if (fs.existsSync(schemaPath)) {
-      const schemaSql = fs.readFileSync(schemaPath, 'utf8');
-      await pool.query(schemaSql);
-      console.log('✅ MySQL Database Schema verified/created successfully.');
+    try {
+      const schemaPath = path.join(__dirname, '../../database/schema.sql');
+      if (fs.existsSync(schemaPath)) {
+        const schemaSql = fs.readFileSync(schemaPath, 'utf8');
+        await pool.query(schemaSql);
+        console.log('✅ MySQL Database Schema verified/created successfully.');
+      }
+    } catch (schemaErr: any) {
+      console.warn('Schema initialization notice:', schemaErr?.message || schemaErr);
     }
 
     // 4. Run Seed DDL if users table is empty
