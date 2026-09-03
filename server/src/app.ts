@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { initDatabase, isMySQLConnected } from './config/database';
+import { initDatabase, isMySQLConnected, lastConnectionError } from './config/database';
 
 // Import Routers
 import authRouter from './routes/auth';
@@ -75,7 +75,8 @@ app.get(['/api/health', '/health'], (req, res) => {
   res.json({ 
     status: 'UP', 
     timestamp: new Date().toISOString(), 
-    database: isMySQLConnected ? 'MySQL (Connected)' : 'Fallback Local Data Mode'
+    database: isMySQLConnected ? 'MySQL (Connected)' : 'Fallback Local Data Mode',
+    connectionError: lastConnectionError || null
   });
 });
 
